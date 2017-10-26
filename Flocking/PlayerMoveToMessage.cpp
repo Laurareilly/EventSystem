@@ -15,7 +15,7 @@ PlayerMoveToMessage::~PlayerMoveToMessage()
 
 void PlayerMoveToMessage::process()
 {
-	Unit* pPlayer = gpGame->getUnitManager()->getPlayerUnit();
+	Unit* pPlayer = gpGame->getPlayer();
 
 	//this needs to be changed to arrive and face steering
 	pPlayer->setSteering(Steering::ARRIVE_AND_FACE, mPos);

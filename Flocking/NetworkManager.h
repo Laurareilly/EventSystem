@@ -51,11 +51,6 @@ public:
 	void SendNetworkedMessage(char* cMessage, int cSenderID) {};
 	void DisconnectFromPeers() {};
 
-	void SendBoidData(std::map<UnitID, Unit*> units); //take in boid list as param
-
-	unsigned int Write(char *buffer);
-	unsigned int Read(char *buffer);
-
 
 	DataMethod mCurrentDataMethod;
 
@@ -63,6 +58,8 @@ public:
 
 	void setCurrentDataMethod(DataMethod method) { mCurrentDataMethod = method; }
 	void setCurrentDataMethod(int method) { mCurrentDataMethod = (DataMethod)method; }
+
+	void sendBeeTarget(Vector2D pos);
 
 	//void updateClient();
 
@@ -93,10 +90,10 @@ public:
 		ID_RECEIVE_DIRECT_MESSAGE,	//Server received ID_CtS, and determined it was a DM. This is sent back to the sender, and is sent to the recipient of the DM (PURPLE)
 		ID_SERVER_MESSAGE,			//Sent by Server, received by Clients, displayed in all red
 		ID_PEER_LEAVE,				//Sent by EITHER ***PEER*** when they go to the lobby or press SHIFT ESC
-		
-		ID_BOID_DATA,
+
 		ID_ASK_FOR_DATA_METHOD,
-		ID_SEND_DATA_METHOD
+		ID_SEND_DATA_METHOD,
+		ID_BEE_TARGET,
 	};
 
 	enum RoomState
@@ -133,14 +130,11 @@ public:
 		unsigned int clientNumber;
 	};
 
-	struct BoidData
+	struct BeeTarget
 	{
-		char boidID;
+		char MessageID;
 		float posX, posY;
-		float velX, velY;
-		float rotation;
-		//maybe acceleration
-	}data[1];
+	};
 
 #pragma pack(pop)
 

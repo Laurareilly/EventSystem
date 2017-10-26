@@ -8,6 +8,8 @@
 #include "GameMessageManager.h"	
 #include "AddUnitMessage.h"
 #include "DeleteUnitMessage.h"
+#include "Event.h"
+#include "MyEvents.h"
 
 ActiveGameState::ActiveGameState()
 {
@@ -23,7 +25,9 @@ ActiveGameState::ActiveGameState()
 	data->doesUpdateInput = 1;
 	data->doesUpdateState = 1;
 	data->doesUpdateNetworking = 1;
+
 	addButtonPressed = deleteButtonPressed = escapePressed = false;
+	deltaTime = LOOP_TARGET_TIME / 1000.0f;
 }
 
 void ActiveGameState::UpdateState()
@@ -42,14 +46,14 @@ void ActiveGameState::UpdateState()
 
 	if (addButtonPressed)
 	{
-		GameMessage* pMessage = new AddUnitMessage();
-		MESSAGE_MANAGER->addMessage(pMessage, 0);
+		/*GameMessage* pMessage = new AddUnitMessage();
+		MESSAGE_MANAGER->addMessage(pMessage, 0);*/
 	}
 	
 	if (deleteButtonPressed)
 	{
-		GameMessage* pMessage = new DeleteUnitMessage();
-		MESSAGE_MANAGER->addMessage(pMessage, 0);
+		//GameMessage* pMessage = new DeleteUnitMessage();
+		//MESSAGE_MANAGER->addMessage(pMessage, 0);
 	}
 
 	addButtonPressed = deleteButtonPressed = escapePressed = false;
@@ -64,6 +68,17 @@ void ActiveGameState::UpdateInput()
 		return;
 	}
 	gpGame->getInputManager()->update();
+
+	if (gpGame->getInputManager()->getPressed(InputManager::KeyCode::ESCAPE))
+	{
+		escapePressed = true;
+	}
+
+	if (!data->playerIsConnected)
+	{
+		return;
+	}
+
 	if (gpGame->getInputManager()->getPressed(InputManager::KeyCode::A))
 	{
 		//add boid
@@ -74,16 +89,24 @@ void ActiveGameState::UpdateInput()
 		//add boid
 		deleteButtonPressed = true;
 	}
-	if (gpGame->getInputManager()->getPressed(InputManager::KeyCode::ESCAPE))
+	if (gpGame->getInputManager()->getPressed(InputManager::MouseCode::LEFT))//left mouse click
 	{
-		escapePressed = true;
+		Vector2D mousePos = Vector2D(gpGame->getInputManager()->getMouseX(), gpGame->getInputManager()->getMouseY());
+		if (data->mpNetworkManager->mIsServer)
+		{
+			data->mpNetworkManager->sendBeeTarget(mousePos);
+			MovePlayerEvent *movePlayer = new MovePlayerEvent(gpGame->getPlayer(), mousePos);
+			EventManager::mpInstance->AddEvent(movePlayer);
+		}
+		else
+		{
+			//spawn flower event
+		}
 	}
 }
 
 void ActiveGameState::UpdateNetworking()
 {
-	//send boid data
-	//mpNetworkManager->SendBoidData(gpGame->getUnitManager()->getReceivedUnits());
 	if (!data->doesUpdateNetworking)
 	{
 		return;
@@ -92,10 +115,6 @@ void ActiveGameState::UpdateNetworking()
 	data->mpNetworkManager->Update();
 
 	if (!data->mpNetworkManager->mIsServer && data->mpNetworkManager->mCurrentDataMethod == DataMethod::DATA_PUSH) return;
-		
-	
-	data->mpNetworkManager->SendBoidData(gpGame->getUnitManager()->getLocalUnits());
-	//update
 }
 
 void ActiveGameState::Display()

@@ -23,6 +23,7 @@ class InputManager;
 class HomeScreen;
 class ApplicationState;
 class ActiveGameState;
+class Unit;
 
 const IDType BACKGROUND_SPRITE_ID = 0;
 const IDType PLAYER_ICON_SPRITE_ID = 1;
@@ -67,6 +68,8 @@ public:
 
 	InputManager* getInputManager() { return mpInputManager; }
 
+	Unit* getPlayer() { return mpPlayer; }
+
 private:
 	GraphicsSystem* mpGraphicsSystem;
 	GraphicsBufferManager* mpGraphicsBufferManager;
@@ -77,6 +80,7 @@ private:
 	Timer* mpLoopTimer;
 	Timer* mpMasterTimer;
 	bool mShouldExit;
+	Unit* mpPlayer;
 
 	//should be somewhere else
 	Font* mpFont;

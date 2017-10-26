@@ -273,6 +273,15 @@
     <ClInclude Include="ApplicationState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="MyEvents.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Queue.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
@@ -328,6 +337,9 @@
     </Filter>
     <Filter Include="Source Files\Flocking">
       <UniqueIdentifier>{a1f7593a-1fe6-4d9b-9cac-1b8c580bc7f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Events">
+      <UniqueIdentifier>{f390c155-beb7-42c7-a302-77e4eaea7d85}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

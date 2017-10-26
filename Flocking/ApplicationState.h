@@ -18,10 +18,6 @@ public:
 	virtual void Display() = 0;
 
 	virtual void ForcePlayerToLobby() = 0;
-	virtual void ReceiveBoidData() = 0;
-
-	virtual void SyncBoidList() = 0;
-	virtual void SendBoidData() = 0;
 
 	virtual int getIsLocal() = 0;
 	virtual void AcceptedToServer() = 0;
@@ -50,6 +46,7 @@ protected:
 
 		char enterServer = 0;
 		NetworkManager *mpNetworkManager;
+		bool playerIsConnected = false;
 	}data[1];
 
 	virtual void GoToNextState(ApplicationState *passData) = 0;

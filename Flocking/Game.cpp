@@ -33,8 +33,10 @@
 
 #include "HomeScreen.h"
 #include "ActiveGameState.h"
+#include "Event.h"
 
 Game* gpGame = NULL;
+EventManager* EventManager::mpInstance = nullptr;
 
 const int WIDTH = 1024;
 const int HEIGHT = 768;
@@ -67,6 +69,8 @@ Game::~Game()
 
 bool Game::init()
 {
+	EventManager::InitInstance();
+
 	srand(time(NULL));
 	mShouldExit = false;
 
@@ -158,7 +162,7 @@ bool Game::init()
 	mBackgroundBufferID = mpGraphicsBufferManager->loadBuffer("wallpaper.bmp");
 	mPlayerIconBufferID = mpGraphicsBufferManager->loadBuffer("arrow.png");
 	mEnemyIconBufferID = mpGraphicsBufferManager->loadBuffer("enemy-arrow.png");
-	IDType targetID = mpGraphicsBufferManager->loadBuffer("target.png");
+	IDType targetID = mpGraphicsBufferManager->loadBuffer("YellowFlower.png");
 	
 	//setup sprites
 	GraphicsBuffer* pBackGroundBuffer = mpGraphicsBufferManager->getBuffer( mBackgroundBufferID );
@@ -186,6 +190,12 @@ bool Game::init()
 
 	mpInputManager = new InputManager();
 	mpInputManager->init();
+
+
+	mpPlayer = gpGame->getUnitManager()->createPlayerUnit(*gpGame->getSpriteManager()->getSprite(AI_ICON_SPRITE_ID), true, PositionData(Vector2D(rand() % gpGame->getGraphicsSystem()->getWidth(), rand() % gpGame->getGraphicsSystem()->getHeight()), 0.0f));
+	mpPlayer->getPositionComponent()->setFacing((rand() % (int)MAX_DEGREES) * 0.0174533);
+	mpPlayer->setSteering(Steering::ARRIVE_AND_FACE, ZERO_VECTOR2D, PLAYER_UNIT_ID);
+
 
 	gpData->loadData();
 
@@ -246,6 +256,7 @@ void Game::processLoop()
 	mpUnitManager->updateAll(TARGET_ELAPSED_MS);
 	mpComponentManager->update(TARGET_ELAPSED_MS);
 
+	EventManager::mpInstance->ExecuteAll();
 	mpMessageManager->processMessagesForThisframe();
 
 	//processInput();

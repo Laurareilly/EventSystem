@@ -17,11 +17,7 @@ public:
 	virtual int getIsLocal() { return data->isLocal; }
 	virtual void SetClientID(int cID) {};
 
-	virtual void ReceiveBoidData() {};
-
-	virtual void SyncBoidList() {};
-	virtual void SendBoidData() {};
-	virtual void AcceptedToServer() {};
+	virtual void AcceptedToServer() { data->playerIsConnected = true; };
 	//virtual SystemAddress GetPeerAddress() { return data->peerSystemAddress; }
 
 	virtual std::string* GetHeaderMessage() { return data->headerMessage; };
@@ -48,9 +44,17 @@ public:
 		data->doesUpdateNetworking = !data->isLocal;
 		data->doesSendData = 0;
 		data->mpNetworkManager = passData->data->mpNetworkManager;
+		data->playerIsConnected = passData->data->playerIsConnected;
 	}
 
 	virtual void GoToNextState(ApplicationState *passData);
+
+	enum FlowerType
+	{
+		BLUE,
+		GREEN,
+		RED
+	};
 
 private:
 
@@ -60,4 +64,16 @@ private:
 	bool escapePressed;
 	bool addButtonPressed;
 	bool deleteButtonPressed;
+	FlowerType mCurrentFlowerType;
+	float mFlowerPower;
+	int score;
+	float countDown;
+	float deltaTime;
+
+	const int MAX_SCORE = 100;
+	const int MAX_FLOWER_POWER = 100;
+	const int BLUE_FLOWER_COST = 5;
+	const int GREEN_FLOWER_COST = 15;
+	const int RED_FLOWER_COST = -20; //As flower player
+	const int RED_FLOWER_DAMAGE = -30; //As bee player
 };

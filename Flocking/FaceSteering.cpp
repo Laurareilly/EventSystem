@@ -50,12 +50,6 @@ Steering* FaceSteering::getSteering()
 	
 	rotationSize = abs(angleDifference);
 
-	/*
-	if (rotationSize < mTargetRadius)
-	{
-		return this;
-	}*/
-
 	if (rotationSize > mSlowRadius)
 	{
 		targetRotation = pOwner->getMaxRotAcc();
@@ -68,6 +62,7 @@ Steering* FaceSteering::getSteering()
 	targetRotation *= angleDifference / rotationSize;
 
 	data.rotAcc = targetRotation - data.rotVel;
+	data.rotVel *= 5.0f;
 	data.rotAcc /= mTimeToTarget;
 
 	this->mData = data;

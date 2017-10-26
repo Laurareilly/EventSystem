@@ -15,12 +15,11 @@ public:
 	virtual void ForcePlayerToLobby() {};
 	virtual int getIsLocal() { return data->isLocal; }
 	virtual void SetClientID(int cID) {};
-
-	virtual void ReceiveBoidData() {};
-
-	virtual void SyncBoidList() {};
-	virtual void SendBoidData() {};
-	virtual void AcceptedToServer() { data->enterServer = 1; };
+	virtual void AcceptedToServer() 
+	{
+		data->enterServer = 1; 
+		data->playerIsConnected = true;
+	};
 
 	bool isServer;
 
@@ -46,6 +45,7 @@ public:
 		data->doesUpdateNetworking = 0;
 		data->doesSendData = 0;
 		data->mpNetworkManager = passData->data->mpNetworkManager;
+		data->playerIsConnected = false;
 	}
 
 	virtual void GoToNextState(ApplicationState *passData);

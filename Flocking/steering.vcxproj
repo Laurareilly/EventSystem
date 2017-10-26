@@ -24,6 +24,7 @@
     <ClInclude Include="Data.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="DeleteUnitMessage.h" />
+    <ClInclude Include="Event.h" />
     <ClInclude Include="ExitGameMessage.h" />
     <ClInclude Include="FaceSteering.h" />
     <ClInclude Include="FlockingSteering.h" />
@@ -37,6 +38,7 @@
     <ClInclude Include="GroupAlignmentSteering.h" />
     <ClInclude Include="HomeScreen.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="MyEvents.h" />
     <ClInclude Include="NetworkManager.h" />
     <ClInclude Include="Notification.h" />
     <ClInclude Include="NotificationProcessor.h" />
@@ -44,6 +46,7 @@
     <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="PlayerMoveToMessage.h" />
     <ClInclude Include="PositionComponent.h" />
+    <ClInclude Include="Queue.h" />
     <ClInclude Include="SeekAndFace.h" />
     <ClInclude Include="SeekSteering.h" />
     <ClInclude Include="SeparationSteering.h" />
