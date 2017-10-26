@@ -1,0 +1,14 @@
+Radii
+Separation
+100
+Cohesion
+150
+Align
+200
+Weight
+Separation
+1.8
+Cohesion
+1.7
+Align
+1.3
