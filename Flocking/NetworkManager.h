@@ -60,6 +60,7 @@ public:
 	void setCurrentDataMethod(int method) { mCurrentDataMethod = (DataMethod)method; }
 
 	void sendBeeTarget(Vector2D pos);
+	void sendFlower(Vector2D pos, int flowerType);
 
 	//void updateClient();
 
@@ -84,7 +85,7 @@ public:
 
 		//misc.
 		ID_SEND_ALL,				//sent by client
-		
+
 		ID_CLIENT_TO_SERVER,		//Clients exclusively send this, but will never receive and interpret it
 		ID_RECEIVE_MESSAGE,			//Server received ID_CtS, and determined that the message isn't a DM. This is then sent by server, and interpreted by clients
 		ID_RECEIVE_DIRECT_MESSAGE,	//Server received ID_CtS, and determined it was a DM. This is sent back to the sender, and is sent to the recipient of the DM (PURPLE)
@@ -94,6 +95,7 @@ public:
 		ID_ASK_FOR_DATA_METHOD,
 		ID_SEND_DATA_METHOD,
 		ID_BEE_TARGET,
+		ID_SPAWN_FLOWER,
 	};
 
 	enum RoomState
@@ -134,6 +136,13 @@ public:
 	{
 		char MessageID;
 		float posX, posY;
+	};
+
+	struct Flower
+	{
+		char MessageID;
+		float posX, posY;
+		int type;
 	};
 
 #pragma pack(pop)

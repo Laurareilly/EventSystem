@@ -28,6 +28,7 @@
     <ClInclude Include="ExitGameMessage.h" />
     <ClInclude Include="FaceSteering.h" />
     <ClInclude Include="FlockingSteering.h" />
+    <ClInclude Include="Flower.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameMessage.h" />

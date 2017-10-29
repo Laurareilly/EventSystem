@@ -32,6 +32,7 @@ ActiveGameState::ActiveGameState()
 
 void ActiveGameState::UpdateState()
 {
+	countDown -= deltaTime;
 	gpGame->processLoop();
 
 	if (escapePressed)
@@ -46,14 +47,14 @@ void ActiveGameState::UpdateState()
 
 	if (addButtonPressed)
 	{
-		/*GameMessage* pMessage = new AddUnitMessage();
-		MESSAGE_MANAGER->addMessage(pMessage, 0);*/
+		int currentType = ((int)mCurrentFlowerType + 1) % NUMFLOWERS;
+		mCurrentFlowerType = (FlowerType)currentType;
 	}
 	
 	if (deleteButtonPressed)
 	{
-		//GameMessage* pMessage = new DeleteUnitMessage();
-		//MESSAGE_MANAGER->addMessage(pMessage, 0);
+		int currentType = ((int)mCurrentFlowerType + (NUMFLOWERS - 1)) % NUMFLOWERS;
+		mCurrentFlowerType = (FlowerType)currentType;
 	}
 
 	addButtonPressed = deleteButtonPressed = escapePressed = false;
@@ -74,7 +75,7 @@ void ActiveGameState::UpdateInput()
 		escapePressed = true;
 	}
 
-	if (!data->playerIsConnected)
+	if (!data->playerIsConnected && !data->isLocal)
 	{
 		return;
 	}
@@ -92,7 +93,7 @@ void ActiveGameState::UpdateInput()
 	if (gpGame->getInputManager()->getPressed(InputManager::MouseCode::LEFT))//left mouse click
 	{
 		Vector2D mousePos = Vector2D(gpGame->getInputManager()->getMouseX(), gpGame->getInputManager()->getMouseY());
-		if (data->mpNetworkManager->mIsServer)
+		if (data->mpNetworkManager->mIsServer && !data->isLocal)
 		{
 			data->mpNetworkManager->sendBeeTarget(mousePos);
 			MovePlayerEvent *movePlayer = new MovePlayerEvent(gpGame->getPlayer(), mousePos);
@@ -100,7 +101,13 @@ void ActiveGameState::UpdateInput()
 		}
 		else
 		{
-			//spawn flower event
+			if (countDown <= 0)
+			{
+				data->mpNetworkManager->sendFlower(mousePos, (int)mCurrentFlowerType);
+				SpawnFlowerEvent *spawnFlower = new SpawnFlowerEvent((int)mCurrentFlowerType, mousePos);
+				EventManager::mpInstance->AddEvent(spawnFlower);
+				countDown = 1;
+			}
 		}
 	}
 }

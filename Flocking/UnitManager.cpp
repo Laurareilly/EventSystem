@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "ComponentManager.h"
 #include "GraphicsSystem.h"
+#include "Flower.h"
 
 UnitID UnitManager::msNextUnitID = PLAYER_UNIT_ID + 1;
 
@@ -18,56 +19,84 @@ UnitManager::UnitManager(Uint32 maxSize)
 	:mPool(maxSize, sizeof(Unit))
 {
 
-	//for (unsigned int i = 0; i < 15; ++i)
-	//{
-	//	mReceivedUnits[i] = NULL;
-	//}
 }
 
-Unit* UnitManager::createUnit(bool addOnlyToReceived, const Sprite& sprite, bool shouldWrap, const PositionData& posData /*= ZERO_POSITION_DATA*/, const PhysicsData& physicsData /*= ZERO_PHYSICS_DATA*/, const UnitID& id)
+Unit* UnitManager::createUnit(bool isFlower, const Sprite& sprite, bool shouldWrap, const PositionData& posData /*= ZERO_POSITION_DATA*/, const PhysicsData& physicsData /*= ZERO_PHYSICS_DATA*/, const UnitID& id)
 {
-	Unit* pUnit = NULL;
-
-	Byte* ptr = mPool.allocateObject();
-	if (ptr != NULL)
+	if (isFlower)
 	{
-		//create unit
-		pUnit = new (ptr)Unit(sprite);//placement new
+		Flower *pFlower = new Flower(&sprite);
 
-		UnitID theID = id;
-		if (theID == INVALID_UNIT_ID)
+		Byte* ptr = mPool.allocateObject();
+		if (ptr != NULL)
 		{
-			theID = msNextUnitID;
-			msNextUnitID++;
+			//create unit
+			//pFlower = new (ptr)Unit(sprite);//placement new
+
+			UnitID theID = id;
+			if (theID == INVALID_UNIT_ID)
+			{
+				theID = msNextUnitID;
+				msNextUnitID++;
+			}
+
+			mUnitMap[theID] = pFlower;
+
+			//assign id and increment nextID counter
+			pFlower->mID = theID;
+
+			//create some components
+			ComponentManager* pComponentManager = gpGame->getComponentManager();
+			pFlower->mPositionComponentID = pComponentManager->allocatePositionComponent(posData, shouldWrap);
+			pFlower->mPhysicsComponentID = pComponentManager->allocatePhysicsComponent(pFlower->mPositionComponentID, physicsData);
+			pFlower->mSteeringComponentID = pComponentManager->allocateSteeringComponent(pFlower->mPhysicsComponentID);
+
+			//set max's
+			pFlower->mMaxSpeed = MAX_SPEED;
+			pFlower->mMaxAcc = MAX_ACC;
+			pFlower->mMaxRotAcc = MAX_ROT_ACC;
+			pFlower->mMaxRotVel = MAX_ROT_VEL;
 		}
 
-		//place in map
-		//if (addOnlyToReceived) 
-		//	mReceivedUnits[theID] = pUnit;
-		//else
-		//	mUnitMap[theID] = pUnit;
-
-		pUnit->isReceived = addOnlyToReceived;
-		mUnitMap[theID] = pUnit;
-
-		//assign id and increment nextID counter
-		pUnit->mID = theID;
-
-		//create some components
-		ComponentManager* pComponentManager = gpGame->getComponentManager();
-		pUnit->mPositionComponentID = pComponentManager->allocatePositionComponent(posData, shouldWrap);
-		pUnit->mPhysicsComponentID = pComponentManager->allocatePhysicsComponent(pUnit->mPositionComponentID, physicsData);
-		pUnit->mSteeringComponentID = pComponentManager->allocateSteeringComponent(pUnit->mPhysicsComponentID);
-
-		//set max's
-		pUnit->mMaxSpeed = MAX_SPEED;
-		pUnit->mMaxAcc = MAX_ACC;
-		pUnit->mMaxRotAcc = MAX_ROT_ACC;
-		pUnit->mMaxRotVel = MAX_ROT_VEL;
-
+		return pFlower;
 	}
+	else
+	{
+		Unit* pUnit = NULL;
 
-	return pUnit;
+		Byte* ptr = mPool.allocateObject();
+		if (ptr != NULL)
+		{
+			//create unit
+			pUnit = new (ptr)Unit(sprite);//placement new
+
+			UnitID theID = id;
+			if (theID == INVALID_UNIT_ID)
+			{
+				theID = msNextUnitID;
+				msNextUnitID++;
+			}
+
+			mUnitMap[theID] = pUnit;
+
+			//assign id and increment nextID counter
+			pUnit->mID = theID;
+
+			//create some components
+			ComponentManager* pComponentManager = gpGame->getComponentManager();
+			pUnit->mPositionComponentID = pComponentManager->allocatePositionComponent(posData, shouldWrap);
+			pUnit->mPhysicsComponentID = pComponentManager->allocatePhysicsComponent(pUnit->mPositionComponentID, physicsData);
+			pUnit->mSteeringComponentID = pComponentManager->allocateSteeringComponent(pUnit->mPhysicsComponentID);
+
+			//set max's
+			pUnit->mMaxSpeed = MAX_SPEED;
+			pUnit->mMaxAcc = MAX_ACC;
+			pUnit->mMaxRotAcc = MAX_ROT_ACC;
+			pUnit->mMaxRotVel = MAX_ROT_VEL;
+		}
+
+		return pUnit;
+	}	
 }
 
 
@@ -92,6 +121,7 @@ Unit* UnitManager::createRandomUnit(const Sprite& sprite)
 	}
 	return pUnit;
 }
+
 
 Unit* UnitManager::getUnit(const UnitID& id) const
 {

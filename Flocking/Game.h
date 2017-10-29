@@ -29,6 +29,9 @@ const IDType BACKGROUND_SPRITE_ID = 0;
 const IDType PLAYER_ICON_SPRITE_ID = 1;
 const IDType AI_ICON_SPRITE_ID = 2;
 const IDType TARGET_SPRITE_ID = 3;
+const IDType BLUEFLOWER_SPRITE_ID = 4;
+const IDType GREENFLOWER_SPRITE_ID = 5;
+const IDType REDFLOWER_SPRITE_ID = 6;
 
 const float LOOP_TARGET_TIME = 33.3f;//how long should each frame of execution take? 30fps = 33.3ms/frame
 
@@ -89,6 +92,9 @@ private:
 	IDType mBackgroundBufferID;
 	IDType mPlayerIconBufferID;
 	IDType mEnemyIconBufferID;
+	IDType mGreenFlowerID;
+	IDType mBlueFlowerID;
+	IDType mRedFlowerID;
 
 
 	double mFrameTime;

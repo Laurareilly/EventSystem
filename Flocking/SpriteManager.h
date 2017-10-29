@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Trackable.h"
 #include "Defines.h"
 #include <map>

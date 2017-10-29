@@ -53,7 +53,8 @@ public:
 	{
 		BLUE,
 		GREEN,
-		RED
+		RED,
+		NUMFLOWERS
 	};
 
 private:
@@ -64,7 +65,7 @@ private:
 	bool escapePressed;
 	bool addButtonPressed;
 	bool deleteButtonPressed;
-	FlowerType mCurrentFlowerType;
+	FlowerType mCurrentFlowerType = FlowerType::BLUE;
 	float mFlowerPower;
 	int score;
 	float countDown;

@@ -70,7 +70,7 @@ private:
 	Unit(Unit&);//invalidate copy constructor
 	void operator=(Unit&);//invalidate assignment operator
 
-
+	friend class Flower;
 	friend class UnitManager;
 };
 

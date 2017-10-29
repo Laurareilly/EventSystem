@@ -161,8 +161,11 @@ bool Game::init()
 	//load buffers
 	mBackgroundBufferID = mpGraphicsBufferManager->loadBuffer("wallpaper.bmp");
 	mPlayerIconBufferID = mpGraphicsBufferManager->loadBuffer("arrow.png");
-	mEnemyIconBufferID = mpGraphicsBufferManager->loadBuffer("enemy-arrow.png");
-	IDType targetID = mpGraphicsBufferManager->loadBuffer("YellowFlower.png");
+	mEnemyIconBufferID = mpGraphicsBufferManager->loadBuffer("arrow.png");
+	mBlueFlowerID = mpGraphicsBufferManager->loadBuffer("BlueFlower.png");
+	mGreenFlowerID = mpGraphicsBufferManager->loadBuffer("YellowFlower.png");
+	mRedFlowerID = mpGraphicsBufferManager->loadBuffer("RedFlower.png");
+	IDType targetID = mpGraphicsBufferManager->loadBuffer("target.png");
 	
 	//setup sprites
 	GraphicsBuffer* pBackGroundBuffer = mpGraphicsBufferManager->getBuffer( mBackgroundBufferID );
@@ -188,11 +191,32 @@ bool Game::init()
 		mpSpriteManager->createAndManageSprite(TARGET_SPRITE_ID, pTargetBuffer, 0, 0, pTargetBuffer->getWidth(), pTargetBuffer->getHeight());
 	}
 
+	////////////flowers
+	GraphicsBuffer* pBlueFlowerBuffer = mpGraphicsBufferManager->getBuffer(mBlueFlowerID);
+	if (pBlueFlowerBuffer != NULL)
+	{
+		mpSpriteManager->createAndManageSprite(BLUEFLOWER_SPRITE_ID, pBlueFlowerBuffer, 0, 0, pBlueFlowerBuffer->getWidth(), pBlueFlowerBuffer->getHeight());
+	}
+
+	GraphicsBuffer* pGreenFlowerBuffer = mpGraphicsBufferManager->getBuffer(mGreenFlowerID);
+	if (pGreenFlowerBuffer != NULL)
+	{
+		mpSpriteManager->createAndManageSprite(GREENFLOWER_SPRITE_ID, pGreenFlowerBuffer, 0, 0, pGreenFlowerBuffer->getWidth(), pGreenFlowerBuffer->getHeight());
+	}
+
+	GraphicsBuffer* pRedFlowerBuffer = mpGraphicsBufferManager->getBuffer(mRedFlowerID);
+	if (pRedFlowerBuffer != NULL)
+	{
+		mpSpriteManager->createAndManageSprite(REDFLOWER_SPRITE_ID, pRedFlowerBuffer, 0, 0, pRedFlowerBuffer->getWidth(), pRedFlowerBuffer->getHeight());
+	}
+
+	//////////////
+
 	mpInputManager = new InputManager();
 	mpInputManager->init();
 
 
-	mpPlayer = gpGame->getUnitManager()->createPlayerUnit(*gpGame->getSpriteManager()->getSprite(AI_ICON_SPRITE_ID), true, PositionData(Vector2D(rand() % gpGame->getGraphicsSystem()->getWidth(), rand() % gpGame->getGraphicsSystem()->getHeight()), 0.0f));
+	mpPlayer = gpGame->getUnitManager()->createPlayerUnit(*gpGame->getSpriteManager()->getSprite(PLAYER_ICON_SPRITE_ID), true, PositionData(Vector2D(rand() % gpGame->getGraphicsSystem()->getWidth(), rand() % gpGame->getGraphicsSystem()->getHeight()), 0.0f));
 	mpPlayer->getPositionComponent()->setFacing((rand() % (int)MAX_DEGREES) * 0.0174533);
 	mpPlayer->setSteering(Steering::ARRIVE_AND_FACE, ZERO_VECTOR2D, PLAYER_UNIT_ID);
 

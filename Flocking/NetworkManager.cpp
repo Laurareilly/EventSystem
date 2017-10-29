@@ -17,6 +17,15 @@ void NetworkManager::sendBeeTarget(Vector2D pos)
 	mpPeer->Send((char*)target, sizeof(target), HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_SYSTEM_ADDRESS, true);
 }
 
+void NetworkManager::sendFlower(Vector2D pos, int flowerType)
+{
+	Flower flower[1] = { ID_SPAWN_FLOWER, 0, 0, 0 };
+	flower[0].posX = pos.getX();
+	flower[0].posY = pos.getY();
+	flower[0].type = flowerType;
+	mpPeer->Send((char*)flower, sizeof(flower), HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_SYSTEM_ADDRESS, true);
+}
+
 NetworkManager::NetworkManager()
 {
 	mpPeer = RakPeerInterface::GetInstance();
@@ -144,6 +153,14 @@ void NetworkManager::Update()
 			Vector2D pos = Vector2D(target->posX, target->posY);
 			MovePlayerEvent *movePlayer = new MovePlayerEvent(gpGame->getPlayer(), pos);
 			EventManager::mpInstance->AddEvent(movePlayer);
+		}
+
+		case ID_SPAWN_FLOWER:
+		{
+			Flower *flower = (Flower*)mpPacket->data;
+			Vector2D pos = Vector2D(flower->posX, flower->posY);
+			SpawnFlowerEvent *spawnFlower = new SpawnFlowerEvent(flower->type, pos);
+			EventManager::mpInstance->AddEvent(spawnFlower);
 		}
 		break;
 		default:

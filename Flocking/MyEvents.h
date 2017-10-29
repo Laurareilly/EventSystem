@@ -7,6 +7,9 @@
 #include "Game.h"
 #include "UnitManager.h"
 #include "Vector2D.h"
+#include "Flower.h"
+#include "SpriteManager.h"
+#include "Sprite.h"
 
 class MovePlayerEvent : public Event
 {
@@ -41,11 +44,40 @@ class ChangeFlowerEvent : public Event
 
 class SpawnFlowerEvent : public Event
 {
+public:
+	SpawnFlowerEvent(int flowerType, Vector2D pos)
+	{
+		mFlowerType = flowerType;
+		mPosition = pos;
+	}
+
+	~SpawnFlowerEvent() { };
+
 	virtual int Execute()
 	{
 		std::cout << "Spawn Flower" << std::endl;
+		Flower *newFlower;
+		switch (mFlowerType)
+		{
+		case 0: //blue
+			newFlower = (Flower*)gpGame->getUnitManager()->createUnit(true, *gpGame->getSpriteManager()->getSprite(BLUEFLOWER_SPRITE_ID), true, PositionData(mPosition, 0), ZERO_PHYSICS_DATA);
+			newFlower->setFlowerType(mFlowerType);
+			break;
+		case 1: //green 
+			newFlower = (Flower*)gpGame->getUnitManager()->createUnit(true, *gpGame->getSpriteManager()->getSprite(GREENFLOWER_SPRITE_ID), true, PositionData(mPosition, 0), ZERO_PHYSICS_DATA);
+			newFlower->setFlowerType(mFlowerType);
+			break;
+		case 2: //red
+			newFlower = (Flower*)gpGame->getUnitManager()->createUnit(true, *gpGame->getSpriteManager()->getSprite(REDFLOWER_SPRITE_ID), true, PositionData(mPosition, 0), ZERO_PHYSICS_DATA);
+			newFlower->setFlowerType(mFlowerType);
+			break;
+		}
+
 		return 0;
 	}
+private:
+	int mFlowerType;
+	Vector2D mPosition;
 };
 
 class AddToScoreEvent : public Event

@@ -282,6 +282,9 @@
     <ClInclude Include="Queue.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
+    <ClInclude Include="Flower.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
