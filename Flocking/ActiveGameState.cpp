@@ -32,6 +32,14 @@ ActiveGameState::ActiveGameState()
 void ActiveGameState::UpdateState()
 {
 	data->headerMessage[0] = "Score: " + std::to_string(score);
+
+	if (!data->mpNetworkManager->mIsServer)
+	{
+		data->headerMessage[1] = "Flower Power: " + std::to_string(mFlowerPower);
+		data->headerMessage[2] = "Flower Cooldown: " + std::to_string(countDown);
+		data->headerMessage[3] = "Flower Type: " + std::to_string(mCurrentFlowerType);
+	}
+
 	if (data->playerIsConnected || data->isLocal) //do this if the game should be running
 	{
 		countDown -= deltaTime;
