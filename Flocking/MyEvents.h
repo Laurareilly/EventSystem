@@ -85,7 +85,7 @@ class AddToScoreEvent : public Event
 public:
 	AddToScoreEvent(int cScore)
 	{
-
+		deltaScore = cScore;
 	}
 
 	~AddToScoreEvent() {};

@@ -10,10 +10,11 @@ public:
 	Flower(const Sprite *aSprite) :Unit(*aSprite) { mpPlayer = gpGame->getPlayer(); }
 	~Flower() {};
 
-	void update()
+	virtual void update()
 	{
 		//do collision checks here
 		//make sure when u delete, u reference it by id and not random unit
+		printf("UPDATING FLOWER!\n");
 		if (mpPlayer != nullptr)
 		{
 			float diff = (mpPlayer->getPositionComponent()->getPosition() - Unit::getPositionComponent()->getPosition()).getLength();

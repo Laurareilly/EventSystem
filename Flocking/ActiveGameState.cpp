@@ -26,10 +26,12 @@ ActiveGameState::ActiveGameState()
 
 	addButtonPressed = deleteButtonPressed = escapePressed = false;
 	deltaTime = LOOP_TARGET_TIME / 1000.0f;
+	countDown = 1;
 }
 
 void ActiveGameState::UpdateState()
 {
+	data->headerMessage[0] = "Score: " + std::to_string(score);
 	if (data->playerIsConnected || data->isLocal) //do this if the game should be running
 	{
 		countDown -= deltaTime;

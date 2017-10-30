@@ -161,7 +161,7 @@ void UnitManager::deleteUnit(const UnitID& id)
 		//free the object in the pool
 		mPool.freeObject((Byte*)pUnit);
 	}
-}
+} //crashes here sometimes, probably flower related
 
 void UnitManager::deleteRandomUnit()
 {

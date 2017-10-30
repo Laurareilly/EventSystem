@@ -46,6 +46,7 @@ public:
 		data->doesSendData = 0;
 		data->mpNetworkManager = passData->data->mpNetworkManager;
 		data->playerIsConnected = passData->data->playerIsConnected;
+		countDown = 1;
 	}
 
 	virtual void GoToNextState(ApplicationState *passData);
