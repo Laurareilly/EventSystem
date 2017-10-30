@@ -39,6 +39,10 @@ void ActiveGameState::UpdateState()
 		data->headerMessage[2] = "Flower Cooldown: " + std::to_string(countDown);
 		data->headerMessage[3] = "Flower Type: " + std::to_string(mCurrentFlowerType);
 	}
+	else
+	{
+		data->headerMessage[1] = "You are the bee, go buzz buzz with LMB";
+	}
 
 	if (data->playerIsConnected || data->isLocal) //do this if the game should be running
 	{
@@ -52,7 +56,8 @@ void ActiveGameState::UpdateState()
 		{
 			data->mpNetworkManager->SendDisconnection();
 		}
-			//send force player to lobby packet
+		
+		//send force player to lobby packet
 		ForcePlayerToLobby();
 	}
 

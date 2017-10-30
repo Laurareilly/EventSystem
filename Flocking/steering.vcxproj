@@ -79,6 +79,7 @@
     <ClCompile Include="ExitGameMessage.cpp" />
     <ClCompile Include="FaceSteering.cpp" />
     <ClCompile Include="FlockingSteering.cpp" />
+    <ClCompile Include="Flower.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameMessage.cpp" />

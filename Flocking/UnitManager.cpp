@@ -153,13 +153,16 @@ void UnitManager::deleteUnit(const UnitID& id)
 		pComponentManager->deallocateSteeringComponent(pUnit->mSteeringComponentID);
 
 
-		msNextUnitID--; //only works if we're taking from the end of the map
+		//msNextUnitID--; //only works if we're taking from the end of the map
 
 						//call destructor
-		pUnit->~Unit();
+		delete pUnit;
+		pUnit = nullptr;
+		return;
+		//pUnit->~Unit();
 
 		//free the object in the pool
-		mPool.freeObject((Byte*)pUnit);
+		//mPool.freeObject((Byte*)pUnit);
 	}
 } //crashes here sometimes, probably flower related
 
@@ -228,9 +231,19 @@ void UnitManager::drawAll() const
 
 void UnitManager::updateAll(float elapsedTime)
 {
+	bool alreadyUpdatedPlayer = false;
 	for (auto it = mUnitMap.begin(); it != mUnitMap.end(); ++it)
 	{
-		it->second->update(elapsedTime);
+		if (it->first == PLAYER_UNIT_ID && !alreadyUpdatedPlayer)
+		{
+			it->second->update(elapsedTime);
+			alreadyUpdatedPlayer = true;
+		}
+		else
+		{
+			if (dynamic_cast<Flower*>(it->second)->update()) //I fucked up the polymorphism so I have to dynamic cast oops, should've just lined up the params correctly
+				it = mUnitMap.begin(); //we're deleting DURING this loop. In the future, mark it for delete and clean it up after -- this was my oversight -rob
+		}
 	}
 
 	for (auto it = mReceivedUnits.begin(); it != mReceivedUnits.end(); ++it)

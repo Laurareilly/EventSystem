@@ -29,7 +29,7 @@ public:
 	//void processTransactions();
 	void draw() const;
 	float getFacing() const;
-	virtual void update(float elapsedTime) {};
+	void update(float elapsedTime) {};
 
 	PositionComponent* getPositionComponent() const;
 	PhysicsComponent* getPhysicsComponent() const;

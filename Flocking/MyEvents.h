@@ -10,6 +10,7 @@
 #include "Flower.h"
 #include "SpriteManager.h"
 #include "Sprite.h"
+#include "ApplicationState.h"
 
 class MovePlayerEvent : public Event
 {
