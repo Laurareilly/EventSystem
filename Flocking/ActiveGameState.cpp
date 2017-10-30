@@ -33,11 +33,13 @@ void ActiveGameState::UpdateState()
 {
 	data->headerMessage[0] = "Score: " + std::to_string(score);
 
+	std::string typeNames[3] = { "Blue", "Green", "Red" };
+
 	if (!data->mpNetworkManager->mIsServer)
 	{
 		data->headerMessage[1] = "Flower Power: " + std::to_string(mFlowerPower);
 		data->headerMessage[2] = "Flower Cooldown: " + std::to_string(countDown);
-		data->headerMessage[3] = "Flower Type: " + std::to_string(mCurrentFlowerType);
+		data->headerMessage[3] = "Flower Type: " + typeNames[mCurrentFlowerType];
 	}
 	else
 	{
@@ -47,6 +49,8 @@ void ActiveGameState::UpdateState()
 	if (data->playerIsConnected || data->isLocal) //do this if the game should be running
 	{
 		countDown -= deltaTime;
+		if (countDown < 0)
+			countDown = 0;
 	}
 	gpGame->processLoop();
 
@@ -143,7 +147,7 @@ void ActiveGameState::UpdateInput()
 					data->mpNetworkManager->sendFlower(mousePos, (int)mCurrentFlowerType);
 					SpawnFlowerEvent *spawnFlower = new SpawnFlowerEvent((int)mCurrentFlowerType, mousePos);
 					EventManager::mpInstance->AddEvent(spawnFlower);
-					countDown = 1;
+					countDown = 0.75f;
 
 					if (mCurrentFlowerType == FlowerType::RED)
 					{
