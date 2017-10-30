@@ -35,6 +35,7 @@ public:
 	void deleteUnit(const UnitID& id);
 	void deleteRandomUnit();
 	void deleteIfShouldBeDeleted();
+	void deleteAllUnits();
 
 	void drawAll() const;
 	void updateAll(float elapsedTime);

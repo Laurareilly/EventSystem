@@ -166,7 +166,7 @@ void ActiveGameState::UpdateInput()
 		}
 	}
 
-	printf("Flower Power: %i\n", mFlowerPower);
+	//printf("Flower Power: %i\n", mFlowerPower);
 }
 
 void ActiveGameState::UpdateNetworking()
@@ -214,7 +214,6 @@ int ActiveGameState::AddToScore(int cScore)
 		data->mpNetworkManager->sendEndGame((int)PLAYER_TWO); //player two is the flower (bee died)
 		EndGameEvent *playerDie = new EndGameEvent((int)PLAYER_TWO); 
 		EventManager::mpInstance->AddEvent(playerDie);
-		GoToNextState(this);
 	}
 	else if (score >= MAX_SCORE)
 	{
@@ -222,7 +221,6 @@ int ActiveGameState::AddToScore(int cScore)
 		data->mpNetworkManager->sendEndGame((int)PLAYER_ONE); //player 1 is the bee (flower man LOSES)
 		EndGameEvent *playerDie = new EndGameEvent(PLAYER_ONE); 
 		EventManager::mpInstance->AddEvent(playerDie);
-		GoToNextState(this);
 	}
 
 	return score;

@@ -76,7 +76,7 @@ private:
 	FlowerType mCurrentFlowerType = FlowerType::BLUE;
 
 	float mFlowerPower = 0;
-	int score = 40;
+	int score = 90;
 	float countDown;
 	float deltaTime;
 

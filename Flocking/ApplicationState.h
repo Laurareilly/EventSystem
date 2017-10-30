@@ -12,6 +12,8 @@ public:
 	friend class HomeScreen;
 	friend class ActiveGameState;
 	friend class EndGameState;
+	friend class MyEvents;
+	friend class Event;
 
 	virtual void UpdateInput() = 0;
 	virtual void UpdateNetworking() = 0;
@@ -31,6 +33,7 @@ public:
 	ApplicationState();
 	~ApplicationState();
 
+	virtual void GoToNextState(ApplicationState *passData) = 0;
 protected:
 	ApplicationState *next, *previous;
 
@@ -53,7 +56,6 @@ protected:
 		bool playerIsConnected = false;
 	}data[1];
 
-	virtual void GoToNextState(ApplicationState *passData) = 0;
 	virtual void OnArriveFromPrevious(ApplicationState *passData) = 0;
 
 };

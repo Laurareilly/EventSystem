@@ -211,17 +211,23 @@ void UnitManager::deleteIfShouldBeDeleted()
 	}
 }
 
+void UnitManager::deleteAllUnits()
+{
+	for (auto it = mUnitMap.begin(); it != mUnitMap.end(); ++it)
+	{
+		deleteUnit(it->second->getID());
+		it = mUnitMap.begin(); //it will delete the first one in the map every time
+	}
+
+	mUnitMap.clear();
+}
+
 void UnitManager::drawAll() const
 {
 	for (auto it = mUnitMap.rbegin(); it != mUnitMap.rend(); ++it)
 	{
 		it->second->draw();
 	}
-
-	//for (unsigned int i = 0; i < 15; ++i)
-	//{
-	//	if(mReceivedUnits[i] != NULL) mReceivedUnits[i]->draw();
-	//}
 
 	for (auto it = mReceivedUnits.begin(); it != mReceivedUnits.end(); ++it)
 	{

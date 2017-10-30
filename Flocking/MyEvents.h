@@ -112,14 +112,13 @@ public:
 	~EndGameEvent() {}
 	virtual int Execute()
 	{
-		std::cout << "Game over" << std::endl;
-		//display a win screen
-		
+		std::cout << "Game over" << std::endl;	
 		//tell the end screen who won so we can adjust the header text
 		gpGame->theState->setWinner(mPlayerWinner);
-		//ask the player if they want to play again
-		//if they do, reset everything
-		//if they dont, reset everything and go to Lobby? OR just exit app??
+		//clear all the units left in game
+		gpGame->getUnitManager()->deleteAllUnits();
+		//go to the end state
+		gpGame->theState->GoToNextState((ApplicationState*)gpGame->theGameState);
 		return 0;
 	}
 private:

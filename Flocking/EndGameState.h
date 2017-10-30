@@ -29,7 +29,11 @@ public:
 
 	virtual void OnArriveFromPrevious(ApplicationState *passData)
 	{
-		data->headerMessage[0] = "Game Over! Would you like to: ";
+		printf("On Arrive From Previous");
+		if (playerWinner == 0)
+			data->headerMessage[0] = "Bee man wins! Would you like to: ";
+		else
+			data->headerMessage[0] = "Flower guy wins! Would you like to: ";
 		data->headerMessage[1] = " 1: Play again";
 		data->headerMessage[2] = " 2: Back to Lobby";
 		data->headerMessage[3] = " 3: Quit Application";
