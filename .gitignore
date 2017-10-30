@@ -6,8 +6,6 @@
 *.BASE.txt
 *.LOCAL.txt
 *.REMOTE.txt
-bin*/
-lib*/
 gen*/
 build*/
 [dD]ebug*/

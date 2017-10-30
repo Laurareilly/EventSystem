@@ -74,7 +74,7 @@ private:
 	bool deleteButtonPressed;
 	FlowerType mCurrentFlowerType = FlowerType::BLUE;
 
-	float mFlowerPower;
+	float mFlowerPower = 0;
 	int score = 40;
 	float countDown;
 	float deltaTime;

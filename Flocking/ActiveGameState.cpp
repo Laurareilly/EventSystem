@@ -147,7 +147,7 @@ void ActiveGameState::UpdateInput()
 		}
 	}
 
-	printf("Flower Power: %u", mFlowerPower);
+	printf("Flower Power: %i\n", mFlowerPower);
 }
 
 void ActiveGameState::UpdateNetworking()
