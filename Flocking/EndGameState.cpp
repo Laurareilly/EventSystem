@@ -6,6 +6,7 @@
 #include "InputManager.h"
 #include "ActiveGameState.h"
 #include "NetworkManager.h"
+#include "MyEvents.h"
 
 EndGameState::EndGameState()
 {
@@ -35,13 +36,22 @@ void EndGameState::UpdateState()
 		return;
 	}
 
+	//gpGame->processLoop();
+	EventManager::mpInstance->ExecuteAll();
+
 	switch (selectedOptionIndex)
 	{
 	case 1:
+	{
 		//replay game
+		data->mpNetworkManager->sendReplayGame();
+		ReplayGameEvent *replayGame = new ReplayGameEvent(false);
+		EventManager::mpInstance->AddEvent(replayGame);
 		break;
+	}
 	case 2:
 		//go back to lobby
+
 		break;
 	case 3:
 		gpGame->exitGame();
@@ -90,8 +100,9 @@ void EndGameState::Display()
 
 void EndGameState::GoToNextState(ApplicationState * passData)
 {
-	gpGame->theState = (ApplicationState*)gpGame->theHomeScreen; //don't know why i have to cast this either, also not sure how to adjust if this should go to homescreen or activegamestate
+	ApplicationState *tmpData = this;
+	gpGame->theState = passData;
 	next = gpGame->theState;
-	next->OnArriveFromPrevious(passData);
+	next->OnArriveFromPrevious(tmpData);
 }
 

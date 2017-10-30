@@ -34,7 +34,7 @@ void HomeScreen::UpdateState()
 	{
 		data->enterServer = false;
 		waitFrames = 30;
-		GoToNextState(this);
+		GoToNextState(gpGame->theGameState);
 		return;
 	}
 
@@ -44,7 +44,7 @@ void HomeScreen::UpdateState()
 		{
 			waitFrames = 30;
 			std::cout << "hi" << std::endl;
-			GoToNextState(this);
+			GoToNextState(gpGame->theGameState);
 		}
 		else
 		{
@@ -66,7 +66,7 @@ void HomeScreen::UpdateState()
 			tryingToConnect = true;
 			wantsToBeSever = true;
 			data->mpNetworkManager->initServer(data->portNumber);
-			GoToNextState(this);
+			GoToNextState(gpGame->theGameState);
 			break;
 		case 2:
 			data->isLocal = 0;
@@ -122,7 +122,8 @@ void HomeScreen::Display()
 
 void HomeScreen::GoToNextState(ApplicationState * passData)
 {
-	gpGame->theState = gpGame->theGameState;
+	ApplicationState *tmpData = this;
+	gpGame->theState = passData;
 	next = gpGame->theState;
-	next->OnArriveFromPrevious(passData);
+	next->OnArriveFromPrevious(tmpData);
 }

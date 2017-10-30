@@ -26,6 +26,7 @@ public:
 
 	virtual int AddToScore(int cScore);
 	virtual void setWinner(int playerWinner) {};
+	//virtual void ResetGameVals();
 
 	virtual void OnArriveFromPrevious(ApplicationState *passData)
 	{
@@ -46,7 +47,12 @@ public:
 		data->doesSendData = 0;
 		data->mpNetworkManager = passData->data->mpNetworkManager;
 		data->playerIsConnected = passData->data->playerIsConnected;
+
+
 		countDown = 1;
+		score = 40;
+		mFlowerPower = 20;
+		mCurrentFlowerType = FlowerType::BLUE;
 	}
 
 	virtual void GoToNextState(ApplicationState *passData);
@@ -75,7 +81,7 @@ private:
 	bool deleteButtonPressed;
 	FlowerType mCurrentFlowerType = FlowerType::BLUE;
 
-	float mFlowerPower = 0;
+	float mFlowerPower = 20;
 	int score = 90;
 	float countDown;
 	float deltaTime;

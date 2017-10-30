@@ -200,7 +200,7 @@ void ActiveGameState::ForcePlayerToLobby()
 
 	gpGame->getUnitManager()->cleanupBoids();
 
-	GoToNextState(this);
+	GoToNextState(gpGame->theHomeScreen);
 }
 
 int ActiveGameState::AddToScore(int cScore)
@@ -226,9 +226,12 @@ int ActiveGameState::AddToScore(int cScore)
 	return score;
 }
 
+
 void ActiveGameState::GoToNextState(ApplicationState * passData)
 {
-	gpGame->theState = (ApplicationState*)gpGame->theEndState; //i don't know why i have to cast this for it to work
+	data->playerIsConnected = false;
+	ApplicationState *tmpData = this;
+	gpGame->theState = passData;
 	next = gpGame->theState;
-	next->OnArriveFromPrevious(passData);
+	next->OnArriveFromPrevious(tmpData);
 }

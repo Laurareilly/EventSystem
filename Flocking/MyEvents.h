@@ -34,15 +34,6 @@ private:
 	Vector2D mMousePos;
 };
 
-class ChangeFlowerEvent : public Event
-{
-	virtual int Execute()
-	{
-		std::cout << "Change Flower" << std::endl;
-		return 0;
-	}
-};
-
 class SpawnFlowerEvent : public Event
 {
 public:
@@ -118,13 +109,41 @@ public:
 		//clear all the units left in game
 		gpGame->getUnitManager()->deleteAllUnits();
 		//go to the end state
-		gpGame->theState->GoToNextState((ApplicationState*)gpGame->theGameState);
+		gpGame->theState->GoToNextState((ApplicationState*)gpGame->theEndState);
 		return 0;
 	}
 private:
 	int mPlayerWinner;
 };
 
+class ReplayGameEvent : public Event
+{
+public:
+	ReplayGameEvent(bool aShouldStartGame)
+	{
+		mShouldStartGame = aShouldStartGame;
+	}
+	~ReplayGameEvent() {};
+
+	virtual int Execute()
+	{
+		//on arrive from previous handles the var resets
+		//switch to game state
+		if (!mShouldStartGame)
+		{
+			gpGame->theState->GoToNextState((ApplicationState*)gpGame->theGameState);
+		}
+		else
+		{
+			//game can't start until both players want to replay
+			gpGame->theState->AcceptedToServer();
+		}
+
+		return 0;
+	}
+private:
+	bool mShouldStartGame;
+};
 
 
 #endif

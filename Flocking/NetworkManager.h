@@ -63,6 +63,7 @@ public:
 	void sendFlower(Vector2D pos, int flowerType);
 	void sendChangeInScore(int cScore);
 	void sendEndGame(int playerWinner);
+	void sendReplayGame();
 
 	//void updateClient();
 
@@ -100,6 +101,7 @@ public:
 		ID_SPAWN_FLOWER,
 		ID_UPDATE_SCORE,
 		ID_END_GAME,
+		ID_REPLAY_GAME
 	};
 
 	enum RoomState

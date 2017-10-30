@@ -27,9 +27,9 @@ Unit* UnitManager::createUnit(bool isFlower, const Sprite& sprite, bool shouldWr
 	{
 		Flower *pFlower = new Flower(&sprite);
 
-		Byte* ptr = mPool.allocateObject();
-		if (ptr != NULL)
-		{
+		//Byte* ptr = mPool.allocateObject();
+		//if (ptr != NULL)
+		//{
 			//create unit
 			//pFlower = new (ptr)Unit(sprite);//placement new
 
@@ -56,7 +56,7 @@ Unit* UnitManager::createUnit(bool isFlower, const Sprite& sprite, bool shouldWr
 			pFlower->mMaxAcc = MAX_ACC;
 			pFlower->mMaxRotAcc = MAX_ROT_ACC;
 			pFlower->mMaxRotVel = MAX_ROT_VEL;
-		}
+		//}
 
 		return pFlower;
 	}
@@ -64,11 +64,11 @@ Unit* UnitManager::createUnit(bool isFlower, const Sprite& sprite, bool shouldWr
 	{
 		Unit* pUnit = NULL;
 
-		Byte* ptr = mPool.allocateObject();
-		if (ptr != NULL)
-		{
+		//Byte* ptr = mPool.allocateObject();
+		//if (ptr != NULL)
+		//{
 			//create unit
-			pUnit = new (ptr)Unit(sprite);//placement new
+			pUnit = new Unit(sprite);//placement new
 
 			UnitID theID = id;
 			if (theID == INVALID_UNIT_ID)
@@ -93,7 +93,7 @@ Unit* UnitManager::createUnit(bool isFlower, const Sprite& sprite, bool shouldWr
 			pUnit->mMaxAcc = MAX_ACC;
 			pUnit->mMaxRotAcc = MAX_ROT_ACC;
 			pUnit->mMaxRotVel = MAX_ROT_VEL;
-		}
+		//}
 
 		return pUnit;
 	}	
@@ -159,10 +159,10 @@ void UnitManager::deleteUnit(const UnitID& id)
 		delete pUnit;
 		pUnit = nullptr;
 		return;
-		//pUnit->~Unit();
 
 		//free the object in the pool
-		//mPool.freeObject((Byte*)pUnit);
+		/*mPool.freeObject((Byte*)pUnit);
+		pUnit->~Unit();*/
 	}
 } //crashes here sometimes, probably flower related
 
@@ -213,13 +213,24 @@ void UnitManager::deleteIfShouldBeDeleted()
 
 void UnitManager::deleteAllUnits()
 {
-	for (auto it = mUnitMap.begin(); it != mUnitMap.end(); ++it)
+	bool shouldRestartLoop = false;
+	for (auto it = mUnitMap.rbegin(); it != mUnitMap.rend(); ++it)
 	{
+		if (shouldRestartLoop)
+		{
+			it = mUnitMap.rbegin(); //it will delete the first one in the map every time
+		}
+		shouldRestartLoop = false;
+
+		if (it->first == PLAYER_UNIT_ID)
+		{
+			continue;
+		}
 		deleteUnit(it->second->getID());
-		it = mUnitMap.begin(); //it will delete the first one in the map every time
+		shouldRestartLoop = true;
 	}
 
-	mUnitMap.clear();
+	//mUnitMap.clear();
 }
 
 void UnitManager::drawAll() const

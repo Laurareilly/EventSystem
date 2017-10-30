@@ -40,6 +40,13 @@ void NetworkManager::sendEndGame(int playerWinner)
 	mpPeer->Send((char*)endMsg, sizeof(endMsg), HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_SYSTEM_ADDRESS, true);
 }
 
+void NetworkManager::sendReplayGame()
+{
+	ClientNumberMessage replayMsg[1] = { ID_REPLAY_GAME, 0 };
+	//dont be mad at us for sending 4 extra bytes of data every frame
+	mpPeer->Send((char*)replayMsg, sizeof(replayMsg), HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_SYSTEM_ADDRESS, true);
+}
+
 NetworkManager::NetworkManager()
 {
 	mpPeer = RakPeerInterface::GetInstance();
@@ -190,6 +197,12 @@ void NetworkManager::Update()
 			ClientNumberMessage *endGame = (ClientNumberMessage*)mpPacket->data;
 			EndGameEvent *endGameEvent = new EndGameEvent(endGame->clientNumber);
 			EventManager::mpInstance->AddEvent(endGameEvent);
+			break;
+		}
+		case ID_REPLAY_GAME:
+		{
+			ReplayGameEvent *replayGame = new ReplayGameEvent(true);
+			EventManager::mpInstance->AddEvent(replayGame);
 			break;
 		}
 		default:

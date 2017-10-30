@@ -45,7 +45,7 @@ public:
 		data->doesDisplay = 1;
 		data->doesUpdateInput = 1;
 		data->doesUpdateState = 1;
-		data->doesUpdateNetworking = 0;
+		data->doesUpdateNetworking = 1;
 		data->doesSendData = 0;
 		data->mpNetworkManager = passData->data->mpNetworkManager;
 		data->playerIsConnected = false;
