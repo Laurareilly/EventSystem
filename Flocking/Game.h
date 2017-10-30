@@ -23,6 +23,7 @@ class InputManager;
 class HomeScreen;
 class ApplicationState;
 class ActiveGameState;
+class EndGameState;
 class Unit;
 
 const IDType BACKGROUND_SPRITE_ID = 0;
@@ -68,6 +69,7 @@ public:
 	ApplicationState *theState;
 	HomeScreen *theHomeScreen;
 	ActiveGameState *theGameState;
+	EndGameState *theEndState;
 
 	InputManager* getInputManager() { return mpInputManager; }
 

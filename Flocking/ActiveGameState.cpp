@@ -17,9 +17,7 @@ ActiveGameState::ActiveGameState()
 	data->headerMessage[1] = "";
 	data->headerMessage[2] = "";
 	data->headerMessage[3] = "";
-	data->headerMessage[4] = "";
-	data->headerMessage[5] = "";
-	data->headerMessage[6] = "";
+
 	data->doesSendData = 0;
 	data->doesDisplay = 1;
 	data->doesUpdateInput = 1;
@@ -189,6 +187,23 @@ void ActiveGameState::ForcePlayerToLobby()
 int ActiveGameState::AddToScore(int cScore)
 {
 	score += cScore;
+
+	//check for if the score is greater/equal to the max score or less than/equal to zero
+	if (score <= 0)
+	{
+		//player die event
+		data->mpNetworkManager->sendPlayerLose();
+		PlayerDieEvent *playerDie = new PlayerDieEvent();
+		EventManager::mpInstance->AddEvent(playerDie);
+	}
+	else if (score >= MAX_SCORE)
+	{
+		//player win
+		data->mpNetworkManager->sendPlayerWin();
+		PlayerWinEvent *playerWin = new PlayerWinEvent();
+		EventManager::mpInstance->AddEvent(playerWin);
+	}
+
 	return score;
 }
 

@@ -1,11 +1,11 @@
 #pragma once
 #include "ApplicationState.h"
 
-class HomeScreen : public ApplicationState
+class EndGameState : public ApplicationState
 {
 public:
-	HomeScreen();
-	~HomeScreen() {};
+	EndGameState();
+	~EndGameState() {};
 
 	virtual void UpdateState();
 	virtual void UpdateInput();
@@ -15,9 +15,9 @@ public:
 	virtual void ForcePlayerToLobby() {};
 	virtual int getIsLocal() { return data->isLocal; }
 	virtual void SetClientID(int cID) {};
-	virtual void AcceptedToServer() 
+	virtual void AcceptedToServer()
 	{
-		data->enterServer = 1; 
+		data->enterServer = 1;
 		data->playerIsConnected = true;
 	};
 
@@ -29,11 +29,11 @@ public:
 
 	virtual void OnArriveFromPrevious(ApplicationState *passData)
 	{
-		data->headerMessage[0] = "Welcome! Choose an option:";
-		data->headerMessage[1] = " 1: Create Game";
-		data->headerMessage[2] = " 2: Join Game";
-		data->headerMessage[3] = " 3: Quit";
-			
+		data->headerMessage[0] = "Game Over! Would you like to: ";
+		data->headerMessage[1] = " 1: Play again";
+		data->headerMessage[2] = " 2: Back to Lobby";
+		data->headerMessage[3] = " 3: Quit Application";
+
 		data->clientID = 0;
 		data->ipAddress = passData->data->ipAddress;
 		data->isLocal = passData->data->isLocal;
@@ -51,9 +51,6 @@ public:
 
 private:
 
-	bool wantsToBeSever = false;
-	bool successfullyConnectedToServer = false;
 	int waitFrames = 30;
 	int selectedOptionIndex = -1;
-	bool tryingToConnect;
 };

@@ -11,6 +11,7 @@ class ApplicationState abstract
 public:
 	friend class HomeScreen;
 	friend class ActiveGameState;
+	friend class EndGameState;
 
 	virtual void UpdateInput() = 0;
 	virtual void UpdateNetworking() = 0;
@@ -37,7 +38,7 @@ protected:
 		//SystemAddress peerSystemAddress;
 		unsigned int isLocal = 1; //0 = networked
 		unsigned int clientID = 1;
-		std::string headerMessage[7];
+		std::string headerMessage[4];
 		char doesUpdateInput;
 		char doesUpdateNetworking;
 		char doesUpdateState;

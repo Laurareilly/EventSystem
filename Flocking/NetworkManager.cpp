@@ -33,6 +33,20 @@ void NetworkManager::sendChangeInScore(int cScore)
 	mpPeer->Send((char*)scoreMsg, sizeof(scoreMsg), HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_SYSTEM_ADDRESS, true);
 }
 
+void NetworkManager::sendPlayerWin()
+{
+	//ScoreMessage scoreMsg[1] = { ID_UPDATE_SCORE, 0 };
+	//scoreMsg[0].deltaScore = cScore;
+	//mpPeer->Send((char*)scoreMsg, sizeof(scoreMsg), HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_SYSTEM_ADDRESS, true);
+}
+
+void NetworkManager::sendPlayerLose()
+{
+	//ScoreMessage scoreMsg[1] = { ID_UPDATE_SCORE, 0 };
+	//scoreMsg[0].deltaScore = cScore;
+	//mpPeer->Send((char*)scoreMsg, sizeof(scoreMsg), HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_SYSTEM_ADDRESS, true);
+}
+
 NetworkManager::NetworkManager()
 {
 	mpPeer = RakPeerInterface::GetInstance();
@@ -176,6 +190,20 @@ void NetworkManager::Update()
 			int deltaScore = score->deltaScore;
 			AddToScoreEvent *scoreEvent = new AddToScoreEvent(deltaScore);
 			EventManager::mpInstance->AddEvent(scoreEvent);
+			break;
+		}
+		case ID_PLAYER_DIE:
+		{
+			//ScoreMessage *score = (ScoreMessage*)mpPacket->data;
+			PlayerDieEvent *dieEvent = new PlayerDieEvent();
+			EventManager::mpInstance->AddEvent(dieEvent);
+			break;
+		}
+		case ID_PLAYER_WIN:
+		{
+			//ScoreMessage *score = (ScoreMessage*)mpPacket->data;
+			PlayerWinEvent *winEvent = new PlayerWinEvent();
+			EventManager::mpInstance->AddEvent(winEvent);
 			break;
 		}
 		default:

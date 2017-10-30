@@ -62,6 +62,8 @@ public:
 	void sendBeeTarget(Vector2D pos);
 	void sendFlower(Vector2D pos, int flowerType);
 	void sendChangeInScore(int cScore);
+	void sendPlayerWin();
+	void sendPlayerLose();
 
 	//void updateClient();
 
@@ -98,6 +100,8 @@ public:
 		ID_BEE_TARGET,
 		ID_SPAWN_FLOWER,
 		ID_UPDATE_SCORE,
+		ID_PLAYER_DIE,
+		ID_PLAYER_WIN,
 	};
 
 	enum RoomState

@@ -33,6 +33,7 @@
 
 #include "HomeScreen.h"
 #include "ActiveGameState.h"
+#include "EndGameState.h"
 #include "Event.h"
 
 Game* gpGame = NULL;
@@ -59,6 +60,7 @@ Game::Game()
 {
 	theHomeScreen = new HomeScreen();
 	theGameState = new ActiveGameState();
+	theEndState = new EndGameState();
 	theState = theHomeScreen;
 }
 
