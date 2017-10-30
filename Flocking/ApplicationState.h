@@ -24,6 +24,8 @@ public:
 
 	virtual std::string* GetHeaderMessage() = 0;
 
+	virtual int AddToScore(int cScore) = 0;
+
 	ApplicationState();
 	~ApplicationState();
 

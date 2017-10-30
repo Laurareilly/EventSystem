@@ -23,6 +23,8 @@ public:
 
 	bool isServer;
 
+	virtual int AddToScore(int cScore) { return 0; }; //doesn't have a score
+
 	std::string* GetHeaderMessage() { return data->headerMessage; }
 
 	virtual void OnArriveFromPrevious(ApplicationState *passData)

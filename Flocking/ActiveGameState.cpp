@@ -32,7 +32,10 @@ ActiveGameState::ActiveGameState()
 
 void ActiveGameState::UpdateState()
 {
-	countDown -= deltaTime;
+	if (data->playerIsConnected || data->isLocal) //do this if the game should be running
+	{
+		countDown -= deltaTime;
+	}
 	gpGame->processLoop();
 
 	if (escapePressed)
@@ -43,6 +46,19 @@ void ActiveGameState::UpdateState()
 		}
 			//send force player to lobby packet
 		ForcePlayerToLobby();
+	}
+
+	//Give Bee points every second
+	if (data->mpNetworkManager->mIsServer)
+	{
+		if (countDown <= 0)
+		{
+			//data->mpNetworkManager->sendChangeInScore(1); //sends an int reflective of the difference in score
+			AddToScoreEvent *addScore = new AddToScoreEvent(1);
+			EventManager::mpInstance->AddEvent(addScore);
+
+			countDown = 1;
+		}
 	}
 
 	if (addButtonPressed)
@@ -103,13 +119,37 @@ void ActiveGameState::UpdateInput()
 		{
 			if (countDown <= 0)
 			{
-				data->mpNetworkManager->sendFlower(mousePos, (int)mCurrentFlowerType);
-				SpawnFlowerEvent *spawnFlower = new SpawnFlowerEvent((int)mCurrentFlowerType, mousePos);
-				EventManager::mpInstance->AddEvent(spawnFlower);
-				countDown = 1;
+				bool shouldSpawnFlower = true;
+				if (mCurrentFlowerType == FlowerType::RED && mFlowerPower < abs(RED_FLOWER_COST))
+				{
+					shouldSpawnFlower = false;
+				}
+
+				if (shouldSpawnFlower)
+				{
+					data->mpNetworkManager->sendFlower(mousePos, (int)mCurrentFlowerType);
+					SpawnFlowerEvent *spawnFlower = new SpawnFlowerEvent((int)mCurrentFlowerType, mousePos);
+					EventManager::mpInstance->AddEvent(spawnFlower);
+					countDown = 1;
+
+					if (mCurrentFlowerType == FlowerType::RED)
+					{
+						mFlowerPower += RED_FLOWER_COST;
+					}
+					else if (mCurrentFlowerType == FlowerType::BLUE)
+					{
+						mFlowerPower += BLUE_FLOWER_COST;
+					}
+					else
+					{
+						mFlowerPower += GREEN_FLOWER_COST;
+					}
+				}
 			}
 		}
 	}
+
+	printf("Flower Power: %u", mFlowerPower);
 }
 
 void ActiveGameState::UpdateNetworking()
@@ -144,6 +184,12 @@ void ActiveGameState::ForcePlayerToLobby()
 	gpGame->getUnitManager()->cleanupBoids();
 
 	GoToNextState(this);
+}
+
+int ActiveGameState::AddToScore(int cScore)
+{
+	score += cScore;
+	return score;
 }
 
 void ActiveGameState::GoToNextState(ApplicationState * passData)

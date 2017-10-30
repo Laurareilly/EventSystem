@@ -82,11 +82,22 @@ private:
 
 class AddToScoreEvent : public Event
 {
+public:
+	AddToScoreEvent(int cScore)
+	{
+
+	}
+
+	~AddToScoreEvent() {};
+
 	virtual int Execute()
 	{
 		std::cout << "Add to Score" << std::endl;
+		gpGame->theState->AddToScore(deltaScore);
 		return 0;
 	}
+private:
+	int deltaScore = 0;
 };
 
 class PlayerDieEvent : public Event

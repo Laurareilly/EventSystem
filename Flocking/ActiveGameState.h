@@ -24,6 +24,8 @@ public:
 
 	bool isServer;
 
+	virtual int AddToScore(int cScore);
+
 	virtual void OnArriveFromPrevious(ApplicationState *passData)
 	{
 		data->headerMessage[0] = "";
@@ -67,7 +69,7 @@ private:
 	bool deleteButtonPressed;
 	FlowerType mCurrentFlowerType = FlowerType::BLUE;
 	float mFlowerPower;
-	int score;
+	int score = 40;
 	float countDown;
 	float deltaTime;
 
