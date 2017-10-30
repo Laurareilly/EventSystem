@@ -24,6 +24,7 @@ public:
 	bool isServer;
 
 	virtual int AddToScore(int cScore) { return 0; }; //doesn't have a score
+	virtual void setWinner(int winner) { } //no winner
 
 	std::string* GetHeaderMessage() { return data->headerMessage; }
 

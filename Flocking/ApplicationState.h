@@ -26,6 +26,7 @@ public:
 	virtual std::string* GetHeaderMessage() = 0;
 
 	virtual int AddToScore(int cScore) = 0;
+	virtual void setWinner(int playerWinner) = 0;
 
 	ApplicationState();
 	~ApplicationState();

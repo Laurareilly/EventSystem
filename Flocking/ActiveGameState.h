@@ -25,6 +25,7 @@ public:
 	bool isServer;
 
 	virtual int AddToScore(int cScore);
+	virtual void setWinner(int playerWinner) {};
 
 	virtual void OnArriveFromPrevious(ApplicationState *passData)
 	{
@@ -57,6 +58,12 @@ public:
 		NUMFLOWERS
 	};
 
+	enum PlayerNum
+	{
+		PLAYER_ONE,
+		PLAYER_TWO
+	};
+
 private:
 
 	bool wantsToBeSever = false;
@@ -66,6 +73,7 @@ private:
 	bool addButtonPressed;
 	bool deleteButtonPressed;
 	FlowerType mCurrentFlowerType = FlowerType::BLUE;
+
 	float mFlowerPower;
 	int score = 40;
 	float countDown;

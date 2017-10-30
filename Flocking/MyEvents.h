@@ -100,31 +100,31 @@ private:
 	int deltaScore = 0;
 };
 
-class PlayerDieEvent : public Event
+class EndGameEvent : public Event
 {
+public:
+	EndGameEvent(int playerWinner)
+	{
+		mPlayerWinner = playerWinner;
+	}
+
+	~EndGameEvent() {}
 	virtual int Execute()
 	{
-		std::cout << "Player died" << std::endl;
+		std::cout << "Game over" << std::endl;
 		//display a win screen
+		
+		//tell the end screen who won so we can adjust the header text
+		gpGame->theState->setWinner(mPlayerWinner);
 		//ask the player if they want to play again
 		//if they do, reset everything
 		//if they dont, reset everything and go to Lobby? OR just exit app??
 		return 0;
 	}
+private:
+	int mPlayerWinner;
 };
 
-class PlayerWinEvent : public Event
-{
-	virtual int Execute()
-	{
-		std::cout << "Player wins" << std::endl;
-		//display a win screen
-		//ask the player if they want to play again
-		//if they do, reset everything
-		//if they dont, reset everything and go to Lobby? OR just exit app??
-		return 0;
-	}
-};
 
 
 #endif

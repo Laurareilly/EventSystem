@@ -62,8 +62,7 @@ public:
 	void sendBeeTarget(Vector2D pos);
 	void sendFlower(Vector2D pos, int flowerType);
 	void sendChangeInScore(int cScore);
-	void sendPlayerWin();
-	void sendPlayerLose();
+	void sendEndGame(int playerWinner);
 
 	//void updateClient();
 
@@ -100,8 +99,7 @@ public:
 		ID_BEE_TARGET,
 		ID_SPAWN_FLOWER,
 		ID_UPDATE_SCORE,
-		ID_PLAYER_DIE,
-		ID_PLAYER_WIN,
+		ID_END_GAME,
 	};
 
 	enum RoomState
@@ -132,7 +130,7 @@ public:
 		char message[96];
 	};
 
-	struct ClientNumberMessage //for ID_CLIENT_NUMBER
+	struct ClientNumberMessage //for ID_CLIENT_NUMBER AND ALso gonna use this for our end game
 	{
 		char messageID;
 		unsigned int clientNumber;

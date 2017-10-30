@@ -9,7 +9,12 @@
 
 EndGameState::EndGameState()
 {
-	data->headerMessage[0] = "Game Over! Would you like to: ";
+	if(playerWinner == 0)
+		data->headerMessage[0] = "Bee man wins! Would you like to: ";
+	else
+		data->headerMessage[0] = "Flower guy wins! Would you like to: ";
+
+	
 	data->headerMessage[1] = " 1: Play again";
 	data->headerMessage[2] = " 2: Back to Lobby";
 	data->headerMessage[3] = " 3: Quit Application";
@@ -85,7 +90,8 @@ void EndGameState::Display()
 
 void EndGameState::GoToNextState(ApplicationState * passData)
 {
-	gpGame->theState = gpGame->theEndState;
+	gpGame->theState = (ApplicationState*)gpGame->theHomeScreen; //don't know why i have to cast this either, also not sure how to adjust if this should go to homescreen or activegamestate
 	next = gpGame->theState;
 	next->OnArriveFromPrevious(passData);
 }
+

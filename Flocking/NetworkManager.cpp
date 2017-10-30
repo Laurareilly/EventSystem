@@ -33,18 +33,11 @@ void NetworkManager::sendChangeInScore(int cScore)
 	mpPeer->Send((char*)scoreMsg, sizeof(scoreMsg), HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_SYSTEM_ADDRESS, true);
 }
 
-void NetworkManager::sendPlayerWin()
+void NetworkManager::sendEndGame(int playerWinner)
 {
-	//ScoreMessage scoreMsg[1] = { ID_UPDATE_SCORE, 0 };
-	//scoreMsg[0].deltaScore = cScore;
-	//mpPeer->Send((char*)scoreMsg, sizeof(scoreMsg), HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_SYSTEM_ADDRESS, true);
-}
-
-void NetworkManager::sendPlayerLose()
-{
-	//ScoreMessage scoreMsg[1] = { ID_UPDATE_SCORE, 0 };
-	//scoreMsg[0].deltaScore = cScore;
-	//mpPeer->Send((char*)scoreMsg, sizeof(scoreMsg), HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_SYSTEM_ADDRESS, true);
+	ClientNumberMessage endMsg[1] = { ID_END_GAME, 0 };
+	endMsg[0].clientNumber = playerWinner;
+	mpPeer->Send((char*)endMsg, sizeof(endMsg), HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_SYSTEM_ADDRESS, true);
 }
 
 NetworkManager::NetworkManager()
@@ -192,18 +185,11 @@ void NetworkManager::Update()
 			EventManager::mpInstance->AddEvent(scoreEvent);
 			break;
 		}
-		case ID_PLAYER_DIE:
+		case ID_END_GAME:
 		{
-			//ScoreMessage *score = (ScoreMessage*)mpPacket->data;
-			PlayerDieEvent *dieEvent = new PlayerDieEvent();
-			EventManager::mpInstance->AddEvent(dieEvent);
-			break;
-		}
-		case ID_PLAYER_WIN:
-		{
-			//ScoreMessage *score = (ScoreMessage*)mpPacket->data;
-			PlayerWinEvent *winEvent = new PlayerWinEvent();
-			EventManager::mpInstance->AddEvent(winEvent);
+			ClientNumberMessage *endGame = (ClientNumberMessage*)mpPacket->data;
+			EndGameEvent *endGameEvent = new EndGameEvent(endGame->clientNumber);
+			EventManager::mpInstance->AddEvent(endGameEvent);
 			break;
 		}
 		default:

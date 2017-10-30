@@ -191,17 +191,19 @@ int ActiveGameState::AddToScore(int cScore)
 	//check for if the score is greater/equal to the max score or less than/equal to zero
 	if (score <= 0)
 	{
-		//player die event
-		data->mpNetworkManager->sendPlayerLose();
-		PlayerDieEvent *playerDie = new PlayerDieEvent();
+		//player die 
+		data->mpNetworkManager->sendEndGame((int)PLAYER_TWO); //player two is the flower (bee died)
+		EndGameEvent *playerDie = new EndGameEvent((int)PLAYER_TWO); 
 		EventManager::mpInstance->AddEvent(playerDie);
+		GoToNextState(this);
 	}
 	else if (score >= MAX_SCORE)
 	{
 		//player win
-		data->mpNetworkManager->sendPlayerWin();
-		PlayerWinEvent *playerWin = new PlayerWinEvent();
-		EventManager::mpInstance->AddEvent(playerWin);
+		data->mpNetworkManager->sendEndGame((int)PLAYER_ONE); //player 1 is the bee (flower man LOSES)
+		EndGameEvent *playerDie = new EndGameEvent(PLAYER_ONE); 
+		EventManager::mpInstance->AddEvent(playerDie);
+		GoToNextState(this);
 	}
 
 	return score;
@@ -209,7 +211,7 @@ int ActiveGameState::AddToScore(int cScore)
 
 void ActiveGameState::GoToNextState(ApplicationState * passData)
 {
-	gpGame->theState = gpGame->theHomeScreen;
+	gpGame->theState = (ApplicationState*)gpGame->theEndState; //i don't know why i have to cast this for it to work
 	next = gpGame->theState;
 	next->OnArriveFromPrevious(passData);
 }

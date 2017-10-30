@@ -48,9 +48,11 @@ public:
 	}
 
 	virtual void GoToNextState(ApplicationState *passData);
+	virtual void setWinner(int winner) { playerWinner = winner; }
 
 private:
 
 	int waitFrames = 30;
 	int selectedOptionIndex = -1;
+	int playerWinner; //0 for player 1, and then 1 for player 2
 };

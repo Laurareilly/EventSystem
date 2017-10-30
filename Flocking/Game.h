@@ -68,8 +68,8 @@ public:
 
 	ApplicationState *theState;
 	HomeScreen *theHomeScreen;
-	ActiveGameState *theGameState;
 	EndGameState *theEndState;
+	ActiveGameState *theGameState;
 
 	InputManager* getInputManager() { return mpInputManager; }
 
