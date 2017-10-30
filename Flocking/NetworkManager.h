@@ -61,6 +61,7 @@ public:
 
 	void sendBeeTarget(Vector2D pos);
 	void sendFlower(Vector2D pos, int flowerType);
+	void sendChangeInScore(int cScore);
 
 	//void updateClient();
 
@@ -96,6 +97,7 @@ public:
 		ID_SEND_DATA_METHOD,
 		ID_BEE_TARGET,
 		ID_SPAWN_FLOWER,
+		ID_UPDATE_SCORE,
 	};
 
 	enum RoomState
@@ -143,6 +145,12 @@ public:
 		char MessageID;
 		float posX, posY;
 		int type;
+	};
+
+	struct ScoreMessage
+	{
+		char messageID;
+		int deltaScore; //NOT unsigned, which is why we have this new struct
 	};
 
 #pragma pack(pop)

@@ -53,7 +53,7 @@ void ActiveGameState::UpdateState()
 	{
 		if (countDown <= 0)
 		{
-			//data->mpNetworkManager->sendChangeInScore(1); //sends an int reflective of the difference in score
+			data->mpNetworkManager->sendChangeInScore(1); //sends an int reflective of the difference in score, this CAN be negative to subtract score
 			AddToScoreEvent *addScore = new AddToScoreEvent(1);
 			EventManager::mpInstance->AddEvent(addScore);
 

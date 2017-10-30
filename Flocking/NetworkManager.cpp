@@ -26,6 +26,13 @@ void NetworkManager::sendFlower(Vector2D pos, int flowerType)
 	mpPeer->Send((char*)flower, sizeof(flower), HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_SYSTEM_ADDRESS, true);
 }
 
+void NetworkManager::sendChangeInScore(int cScore)
+{
+	ScoreMessage scoreMsg[1] = { ID_UPDATE_SCORE, 0 };
+	scoreMsg[0].deltaScore = cScore;
+	mpPeer->Send((char*)scoreMsg, sizeof(scoreMsg), HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_SYSTEM_ADDRESS, true);
+}
+
 NetworkManager::NetworkManager()
 {
 	mpPeer = RakPeerInterface::GetInstance();
@@ -163,6 +170,14 @@ void NetworkManager::Update()
 			EventManager::mpInstance->AddEvent(spawnFlower);
 		}
 		break;
+		case ID_UPDATE_SCORE:
+		{
+			ScoreMessage *score = (ScoreMessage*)mpPacket->data;
+			int deltaScore = score->deltaScore;
+			AddToScoreEvent *scoreEvent = new AddToScoreEvent(deltaScore);
+			EventManager::mpInstance->AddEvent(scoreEvent);
+			break;
+		}
 		default:
 		{
 			std::cout << "receiving id: " << mpPacket->data[0] << std::endl;
