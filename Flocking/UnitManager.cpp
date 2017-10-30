@@ -210,7 +210,7 @@ void UnitManager::deleteIfShouldBeDeleted()
 
 void UnitManager::drawAll() const
 {
-	for (auto it = mUnitMap.begin(); it != mUnitMap.end(); ++it)
+	for (auto it = mUnitMap.rbegin(); it != mUnitMap.rend(); ++it)
 	{
 		it->second->draw();
 	}
