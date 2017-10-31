@@ -1,7 +1,7 @@
 #pragma once
 
 /*
-Project 2- Networked Boids
+Lab 3- Event Manager
 EGP 405-02
 Laura Reilly -- 0972157
 Robert Mitchell -- 0935286
@@ -64,6 +64,7 @@ public:
 	void sendChangeInScore(int cScore);
 	void sendEndGame(int playerWinner);
 	void sendReplayGame();
+	void sendPlayerPosition(Vector2D pos);
 
 	//void updateClient();
 
@@ -95,13 +96,14 @@ public:
 		ID_SERVER_MESSAGE,			//Sent by Server, received by Clients, displayed in all red
 		ID_PEER_LEAVE,				//Sent by EITHER ***PEER*** when they go to the lobby or press SHIFT ESC
 
-		ID_ASK_FOR_DATA_METHOD,
 		ID_SEND_DATA_METHOD,
 		ID_BEE_TARGET,
 		ID_SPAWN_FLOWER,
 		ID_UPDATE_SCORE,
 		ID_END_GAME,
-		ID_REPLAY_GAME
+		ID_REPLAY_GAME,
+		ID_PLAYER_POS,
+		ID_ASK_POSITION,
 	};
 
 	enum RoomState

@@ -31,19 +31,20 @@ ActiveGameState::ActiveGameState()
 
 void ActiveGameState::UpdateState()
 {
-	data->headerMessage[0] = "Score: " + std::to_string(score);
 
 	std::string typeNames[3] = { "Blue", "Green", "Red" };
 
 	if (!data->mpNetworkManager->mIsServer)
 	{
+		data->headerMessage[0] = "Place flower with Left Click / Change Flower with A/D: ";
 		data->headerMessage[1] = "Flower Power: " + std::to_string(mFlowerPower);
 		data->headerMessage[2] = "Flower Cooldown: " + std::to_string(countDown);
 		data->headerMessage[3] = "Flower Type: " + typeNames[mCurrentFlowerType];
 	}
 	else
 	{
-		data->headerMessage[1] = "You are the bee, go buzz buzz with LMB";
+		data->headerMessage[0] = "Score: " + std::to_string(score);
+		data->headerMessage[1] = "You are the bee, go buzz buzz with Left Click";
 	}
 
 	if (data->playerIsConnected || data->isLocal) //do this if the game should be running
@@ -188,18 +189,6 @@ void ActiveGameState::Display()
 
 void ActiveGameState::ForcePlayerToLobby()
 {
-	if (!data->isLocal)
-	{
-		//make a cleanup boids function that clears all the units (unit manager)
-		// for every boid in list
-		//  ->should be deleted = true
-		// deleteIfShouldBeDeleted
-		//cleanup networked boid array- delete all pointers
-		//send packet that says we left
-	}
-
-	gpGame->getUnitManager()->cleanupBoids();
-
 	GoToNextState(gpGame->theHomeScreen);
 }
 

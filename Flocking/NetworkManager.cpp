@@ -42,9 +42,19 @@ void NetworkManager::sendEndGame(int playerWinner)
 
 void NetworkManager::sendReplayGame()
 {
+	if(mIsServer)
+		sendPlayerPosition(gpGame->getPlayer()->getPositionComponent()->getPosition());
 	ClientNumberMessage replayMsg[1] = { ID_REPLAY_GAME, 0 };
 	//dont be mad at us for sending 4 extra bytes of data every frame
 	mpPeer->Send((char*)replayMsg, sizeof(replayMsg), HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_SYSTEM_ADDRESS, true);
+}
+
+void NetworkManager::sendPlayerPosition(Vector2D pos)
+{
+	BeeTarget position[1] = { ID_PLAYER_POS, 0,0 };
+	position[0].posX = pos.getX();
+	position[0].posY = pos.getY();
+	mpPeer->Send((char*)position, sizeof(position), HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_SYSTEM_ADDRESS, true);
 }
 
 NetworkManager::NetworkManager()
@@ -126,7 +136,7 @@ void NetworkManager::Update()
 			mpPeer->Send(sendBuff, bytesWritten, HIGH_PRIORITY, RELIABLE_ORDERED, 0, mpPacket->systemAddress, false);*/
 			//mpPeer->Send(sendBuff, bytesWritten, HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_SYSTEM_ADDRESS, true);
 
-			UsernameMessage username[1] = { ID_ASK_FOR_DATA_METHOD,  "", "WHATS UR data method" };
+			UsernameMessage username[1] = { ID_ASK_POSITION,  "", "WHATS UR data method" };
 			username[0].messageID;
 		
 			mpPeer->Send((char*)username, sizeof(username), HIGH_PRIORITY, RELIABLE_ORDERED, 0, mpPacket->systemAddress, false);
@@ -152,15 +162,12 @@ void NetworkManager::Update()
 			gpGame->theState->ForcePlayerToLobby();
 			mpPeer->CloseConnection(mpPacket->systemAddress, true);
 			break;		
-		case ID_ASK_FOR_DATA_METHOD:
+		case ID_ASK_POSITION:
 		{
-			ClientNumberMessage msg[1] = { ID_SEND_DATA_METHOD, 0 };
-			msg[0].clientNumber = getCurrentDataMethod();
-
 			gpGame->theState->AcceptedToServer();
-
-			mpPeer->Send((char*)msg, sizeof(msg), HIGH_PRIORITY, RELIABLE_ORDERED, 0, mpPacket->systemAddress, false);
+			sendPlayerPosition(gpGame->getPlayer()->getPositionComponent()->getPosition());
 		}
+		break;
 		case ID_SEND_DATA_METHOD:
 		{
 			ClientNumberMessage *username = (ClientNumberMessage*)mpPacket->data;
@@ -175,7 +182,7 @@ void NetworkManager::Update()
 			MovePlayerEvent *movePlayer = new MovePlayerEvent(gpGame->getPlayer(), pos);
 			EventManager::mpInstance->AddEvent(movePlayer);
 		}
-
+		break;
 		case ID_SPAWN_FLOWER:
 		{
 			Flower *flower = (Flower*)mpPacket->data;
@@ -203,6 +210,13 @@ void NetworkManager::Update()
 		{
 			ReplayGameEvent *replayGame = new ReplayGameEvent(true);
 			EventManager::mpInstance->AddEvent(replayGame);
+			break;
+		}
+		case ID_PLAYER_POS:
+		{
+			BeeTarget *position = (BeeTarget*)mpPacket->data;
+			Vector2D pos = Vector2D(position->posX, position->posY);
+			gpGame->getPlayer()->getPositionComponent()->setPosition(pos);
 			break;
 		}
 		default:

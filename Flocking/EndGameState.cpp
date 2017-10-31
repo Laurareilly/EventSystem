@@ -51,7 +51,7 @@ void EndGameState::UpdateState()
 	}
 	case 2:
 		//go back to lobby
-
+		data->mpNetworkManager->SendDisconnection();
 		break;
 	case 3:
 		gpGame->exitGame();

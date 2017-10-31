@@ -115,7 +115,7 @@ int main(int argc, char **argv)
 	gpData = NULL;
 
 	delete gpPerformanceTracker;
-	gMemoryTracker.reportAllocations( cout );
+	//gMemoryTracker.reportAllocations( cout );
 	system("pause");
 
 	return 0;
